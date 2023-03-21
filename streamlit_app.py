@@ -32,9 +32,13 @@ streamlit.dataframe(fruits_to_show)
 # Header
 streamlit.header('Fruitvice Fruit Advice!')
 
+# Adding user input for fruit names:
+fruit_choice = streamlit.text_input('What fruit would you like information about?','Kiwi')
+streamlit.write('The user entered ', fruit_choice)
+
 # Request response
 import requests
-fruityvice_response = requests.get("https://fruityvice.com/api/fruit/"+"kiwi") # Makes editing the fruit easier
+fruityvice_response = requests.get("https://fruityvice.com/api/fruit/"+ fruit_choice) # User fruit selection is requested
 # streamlit.text(fruityvice_response.json()) # Writes data on screen
 
 # Making the presentation nicer:
