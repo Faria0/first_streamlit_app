@@ -36,6 +36,17 @@ streamlit.dataframe(fruits_to_show)
 # Header
 streamlit.header('Fruitvice Fruit Advice!')
 
+# Create a function to pull data from fruityvice:
+def get_fruityvice_data(this_fruit_choice):
+  fruityvice_response = requests.get("https://fruityvice.com/api/fruit/"+ this_fruit_choice)
+  # streamlit.text(fruityvice_response.json()) # Writes data on screen. Removed as not needed
+  # Making the presentation nicer:
+  # normalize the json into a pandas object
+  fruityvice_normalized = pandas.json_normalize(fruityvice_response.json())
+  return fruityvice_normalized
+  
+
+
 # try and except for user input for fruityvice:
 try:
   # Adding user input for fruit names:
@@ -44,14 +55,9 @@ try:
   if not fruit_choice:
     streamlit.error("Please select a fruit to get information.")
   else:
-    # Request response
-    fruityvice_response = requests.get("https://fruityvice.com/api/fruit/"+ fruit_choice) # User fruit selection is requested
-    # streamlit.text(fruityvice_response.json()) # Writes data on screen. Removed as not needed
-    # Making the presentation nicer:
-    # normalize the json into a pandas object
-    fruityvice_normalized = pandas.json_normalize(fruityvice_response.json())
+    back_from_function = get_fruityvice_data(fruit_choice)
     # display the new pandas dataframe
-    streamlit.dataframe(fruityvice_normalized)
+    streamlit.dataframe(back_from_function)
     
 except URLError as e:
   strealit.error()
